@@ -2,7 +2,7 @@
 
 IRC 翻页 / IRC Paging
 
-本功能来自 TAXCore，分离为独立模组。 / This feature is extracted from TAXCore as a standalone mod.
+本功能来自 [TAXCore](https://github.com/Dsl114514/TAXCore)，分离为独立模组。 / This feature is extracted from [TAXCore](https://github.com/Dsl114514/TAXCore) as a standalone mod.
 
 ---
 
@@ -18,5 +18,5 @@ TAXCore 翻页功能的标准配置：
 
 ---
 
-若已安装 TAXCore，此模组会自动跳过，不重复加载。
-/ If TAXCore is installed, this mod skips loading automatically.
+若已安装 [TAXCore](https://github.com/Dsl114514/TAXCore)，此模组会自动跳过，不重复加载。
+/ If [TAXCore](https://github.com/Dsl114514/TAXCore) is installed, this mod skips loading automatically.
