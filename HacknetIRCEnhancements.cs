@@ -11,7 +11,7 @@ namespace HacknetIRCEnhancements
     {
         public const string ModGUID = "com.LDTchara.IRCEnhancements";
         public const string ModName = "HacknetIRCEnhancements";
-        public const string ModVer = "1.0.0";
+        public const string ModVer = "1.0.1";
 
         private static bool IsTAXCoreLoaded =>
             HacknetChainloader.Instance?.Plugins?.ContainsKey("com.TAXCore.MainMenuText") == true;
