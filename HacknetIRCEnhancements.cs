@@ -45,48 +45,64 @@ namespace HacknetIRCEnhancements
             return _scrollOffsets[irc];
         }
 
+        private static int _prevScrollWheel = 0;
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(IRCSystem), "Draw")]
         private static void OnDraw(IRCSystem __instance, bool CanWrite)
         {
             if (!__instance.isCurrentlyBeingViewed) return;
 
-            var state = Keyboard.GetState();
-            bool anyKey = state.IsKeyDown(Keys.Up) || state.IsKeyDown(Keys.Down) ||
-                          state.IsKeyDown(Keys.PageUp) || state.IsKeyDown(Keys.PageDown) ||
-                          state.IsKeyDown(Keys.Home) || state.IsKeyDown(Keys.End);
-
-            if (!anyKey)
-            {
-                _keyHeld = false;
-                return;
-            }
-
-            // Throttle repeat
-            if (_keyHeld) return;
-            var now = DateTime.UtcNow;
-            if (_lastKeyTime.TryGetValue(__instance, out var last) &&
-                (now - last).TotalMilliseconds < KEY_REPEAT_DELAY_MS)
-                return;
-            _keyHeld = true;
-            _lastKeyTime[__instance] = now;
-
             var logs = __instance.GetLogsFromFile();
             if (logs == null || logs.Count == 0) return;
-
-            int offset = GetOffset(__instance);
             int maxOffset = logs.Count - 1;
             if (maxOffset < 0) maxOffset = 0;
 
-            if (state.IsKeyDown(Keys.Home)) offset = maxOffset;
-            else if (state.IsKeyDown(Keys.End)) offset = 0;
-            else if (state.IsKeyDown(Keys.PageUp)) offset += 15;
-            else if (state.IsKeyDown(Keys.PageDown)) offset -= 15;
-            else if (state.IsKeyDown(Keys.Up)) offset += 1;
-            else if (state.IsKeyDown(Keys.Down)) offset -= 1;
+            int offset = GetOffset(__instance);
+            bool changed = false;
 
-            offset = Math.Max(0, Math.Min(offset, maxOffset));
-            _scrollOffsets[__instance] = offset;
+            // Mouse wheel
+            int wheel = Mouse.GetState().ScrollWheelValue;
+            int delta = wheel - _prevScrollWheel;
+            _prevScrollWheel = wheel;
+            if (delta != 0)
+            {
+                offset += delta / 120;
+                changed = true;
+            }
+
+            // Keyboard scrolling (PageUp/PageDown/Home/End only, no Up/Down to avoid terminal conflict)
+            var state = Keyboard.GetState();
+            bool anyKey = state.IsKeyDown(Keys.PageUp) || state.IsKeyDown(Keys.PageDown) ||
+                          state.IsKeyDown(Keys.Home) || state.IsKeyDown(Keys.End);
+
+            if (anyKey)
+            {
+                var now = DateTime.UtcNow;
+                if (!_keyHeld &&
+                    (!_lastKeyTime.TryGetValue(__instance, out var last) ||
+                     (now - last).TotalMilliseconds >= KEY_REPEAT_DELAY_MS))
+                {
+                    _lastKeyTime[__instance] = now;
+
+                    if (state.IsKeyDown(Keys.Home)) offset = maxOffset;
+                    else if (state.IsKeyDown(Keys.End)) offset = 0;
+                    else if (state.IsKeyDown(Keys.PageUp)) offset += 15;
+                    else if (state.IsKeyDown(Keys.PageDown)) offset -= 15;
+                    changed = true;
+                }
+                _keyHeld = true;
+            }
+            else
+            {
+                _keyHeld = false;
+            }
+
+            if (changed)
+            {
+                offset = Math.Max(0, Math.Min(offset, maxOffset));
+                _scrollOffsets[__instance] = offset;
+            }
         }
 
         [HarmonyPostfix]
