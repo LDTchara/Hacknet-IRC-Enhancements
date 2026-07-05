@@ -8,7 +8,7 @@
     <NoWarn>CS8500</NoWarn>
     <AnalysisMode>Recommended</AnalysisMode>
     <PlatformTarget>x86</PlatformTarget>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>LDTchara</Authors>
     <Description>Lightweight IRC paging and enhancements for Hacknet.</Description>
   </PropertyGroup>
