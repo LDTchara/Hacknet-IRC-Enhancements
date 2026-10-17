@@ -58,4 +58,4 @@ dotnet build HacknetIRCEnhancements.csproj --nologo
 
 ---
 
-**License**: MIT
+**License**: MIT-0 (MIT No Attribution) — see [LICENSE](LICENSE).
