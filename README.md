@@ -7,6 +7,10 @@ A standalone IRC scrolling mod for Hacknet. Adds mouse wheel scrolling and Home/
 本模组功能来自 [TAXCore](https://github.com/Dsl114514/TAXCore) 的 IRC 翻页补丁，分离为独立模组后减轻了依赖，增加了日志裁剪和关键节流等改进。
 This feature is extracted from [TAXCore](https://github.com/Dsl114514/TAXCore)'s IRC scroll patch, released standalone with log trimming and key throttle added.
 
+> [!WARNING]
+> 本项目部分文档与代码由 AI 辅助生成，可能存在不准确或不完整之处，请在使用前自行评估；若发现问题，欢迎通过 Issue 或 PR 指出，我们会及时修正。
+> This project uses AI-assisted generation for parts of its documentation and code, which may be inaccurate or incomplete. Please evaluate before use, and feel free to report any issues via Issue or PR — we will fix them promptly.
+
 ---
 
 ## 功能 / Features
